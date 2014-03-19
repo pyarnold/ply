@@ -6,23 +6,26 @@
 # -----------------------------------------------------------------------------
 
 import sys
-if ".." not in sys.path: sys.path.insert(0,"..")
+if ".." not in sys.path:
+    sys.path.insert(0, "..")
 
 tokens = (
-    'NAME','NUMBER',
-    )
+    'NAME', 'NUMBER',
+)
 
-states = (('instdef','inclusive'),('spam','exclusive'))
+states = (('instdef', 'inclusive'), ('spam', 'exclusive'))
 
-literals = ['=','+','-','*','/', '(',')']
+literals = ['=', '+', '-', '*', '/', '(', ')']
 
 # Tokens
+
 
 def t_instdef_spam_BITS(t):
     r'[01-]+'
     return t
 
-t_NAME    = r'[a-zA-Z_][a-zA-Z0-9_]*'
+t_NAME = r'[a-zA-Z_][a-zA-Z0-9_]*'
+
 
 def NUMBER(t):
     r'\d+'
@@ -38,10 +41,12 @@ t_ANY_NUMBER = NUMBER
 t_ignore = " \t"
 t_spam_ignore = t_ignore
 
+
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += t.value.count("\n")
-    
+
+
 def t_error(t):
     print("Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
@@ -50,5 +55,5 @@ t_spam_error = t_error
 
 # Build the lexer
 import ply.lex as lex
-lex.lex(optimize=1,lextab="aliastab")
+lex.lex(optimize=1, lextab="aliastab")
 lex.runmain(data="3+4")
